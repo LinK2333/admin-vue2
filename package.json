@@ -5,10 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prod": "vue-cli-service build --mode prod",
+    "stg": "vue-cli-service build --mode stg"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "element-ui": "^2.15.6",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
@@ -23,6 +26,8 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
