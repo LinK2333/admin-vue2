@@ -1,9 +1,12 @@
 // vue.config.js
 const path =  require('path');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+
 const resolve = (dir) => path.join(__dirname, dir);
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',  // 公共路径
+  publicPath: IS_PROD ? '/' : '/',  // 公共路径
   indexPath: 'index.html' , // 相对于打包路径index.html的路径
   outputDir: process.env.outputDir || 'dist', // 'dist', 生产环境构建文件的目录
   assetsDir: 'static', // 相对于outputDir的静态资源(js、css、img、fonts)目录
@@ -13,7 +16,7 @@ module.exports = {
   parallel: require("os").cpus().length > 1, // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
   pwa: {}, // 向 PWA 插件传递选项。
   configureWebpack: config => {
-    if (process.env.NODE_ENV === "prod") {
+    if (IS_PROD) {
       config.optimization = {
         splitChunks: {
           cacheGroups: {
@@ -50,6 +53,19 @@ module.exports = {
   },
   chainWebpack: config => {
     config.resolve.symlinks(true); // 修复热更新失效
+    const svgRule = config.module.rule("svg");
+    svgRule.uses.clear();
+    svgRule.exclude.add(/node_modules/);
+    svgRule
+      .test(/\.svg$/)
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]"
+      });
+    const imagesRule = config.module.rule("images");
+    imagesRule.exclude.add(resolve("src/icons"));
+    config.module.rule("images").test(/\.(png|jpe?g|gif|svg)(\?.*)?$/);
     // 如果使用多页面打包，使用vue inspect --plugins查看html是否在结果数组中
     config.plugin("html").tap(args => {
       // 修复 Lazy loading routes Error
@@ -62,8 +78,13 @@ module.exports = {
       .set('@components', resolve('src/components'))
       .set('@views', resolve('src/views'))
       .set('@store', resolve('src/store'));
-    if (process.env.NODE_ENV === "prod") {
+    if (IS_PROD) {
       config.optimization.delete("splitChunks");
+      config.plugin("webpack-report") // 打包分析
+        .use(BundleAnalyzerPlugin, [{
+          analyzerMode: "static"
+        }]
+      );
     }
   },
   css: {
@@ -86,8 +107,18 @@ module.exports = {
     host: "localhost",
     port: 8080, // 端口号
     https: false, // https:{type:Boolean}
-    open: false, //配置自动启动浏览器
+    open: true, //配置自动启动浏览器
     hotOnly: true, // 热更新
-    proxy: null //配置多个跨域
+    proxy: null,
+    //  {
+    //   // with options
+    //   "/api": {
+    //     target: "https://movie.douban.com",
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       "^/api": ""
+    //     }
+    //   },
+    // } //配置多个跨域
   }
 }

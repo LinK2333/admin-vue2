@@ -14,8 +14,8 @@
       >+ New Tag</el-button
     >
     <el-tag
-      :key="tag"
-      v-for="tag in dynamicTags"
+      :key="index"
+      v-for="(tag, index) in dynamicTags"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)"
@@ -55,6 +55,10 @@ export default {
     },
 
     showInput() {
+      // 最多只能添加5个
+      if (this.dynamicTags.length >= 5) {
+        return this.$message.error("最多只能添加5个!");
+      }
       this.inputVisible = true;
       this.$nextTick(() => {
         this.$refs.saveTagInput.$refs.input.focus();
@@ -63,11 +67,18 @@ export default {
 
     handleInputConfirm() {
       let inputValue = this.inputValue;
-      if (inputValue) {
+      if (inputValue.length > 10) {
+        this.$message.error("长度不可超过10，请重新输入...");
+      } else if (inputValue) {
         this.dynamicTags.push(inputValue);
       }
       this.inputVisible = false;
       this.inputValue = "";
+    },
+
+    // Tags转换成字符串
+    getTags() {
+      return this.dynamicTags.join(",");
     },
   },
 };
