@@ -8,17 +8,15 @@
       :unique-opened="uniqueopened"
       :router="true"
       :collapse="isCollapse"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
     >
       <div v-for="route in menusList" :key="route.name" v-if="!route.hidden">
-        <!-- 单路由   -->
-        <el-menu-item v-if="route.alwaysShow" :index="route.children[0].path">
+        <el-menu-item
+          v-if="route.children && route.children.length > 0"
+          :index="route.children[0].path"
+        >
           <i :class="route.children[0].meta.icon"></i>
           <span slot="title">{{ route.children[0].name }}</span>
         </el-menu-item>
-        <!-- 多路由 -->
         <el-submenu v-else :index="route.path">
           <template slot="title">
             <div class="link-style">
@@ -36,7 +34,11 @@
 </template>
 
 <script>
+import menu from "./menu.vue";
 export default {
+  component: {
+    menu,
+  },
   data() {
     return {
       uniqueopened: true,

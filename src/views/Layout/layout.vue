@@ -26,7 +26,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-main {
-  padding: 0;
+.layout-container {
+  height: 100%;
+  .el-container {
+    height: 100%;
+    .el-main {
+      padding: 0;
+    }
+  }
 }
 </style>

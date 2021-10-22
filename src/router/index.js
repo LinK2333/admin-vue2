@@ -22,28 +22,17 @@ Vue.use(VueRouter);
  */
 
   export const constantRoutes = [{
-      path: '/',
-      redirect: '/Demo',
-      hidden: true
-    },
-    {
-      path: '/Demo',
-      name: "Demo",
-      component: Demo,
-      meta: {
-        title: 'Demo'
-      },
-      hidden: true
-    },
-    {
-      path: '/Login',
-      name: 'Login',
-      meta: {
-        title: '登录'
-      },
-      component: () => import(/* webpackChunkName: "Login" */ '@/views/Login/index.vue'),
-      hidden: true
-    },
+    path: '/',
+    redirect: '/login',
+    hidden: true,
+  },
+  {
+    path: '/login',  // 登陆界面
+    name: 'Login',
+    hidden: true,
+    component: () => import(/* webpackChunkName: "Login" */ '@/views/Login/index.vue'),
+    meta: { title: '登陆'  }
+  }
   ]
 
 /**
@@ -57,19 +46,44 @@ Vue.use(VueRouter);
       path: '/exam',
       component: Layout,
       hidden: false,
-      alwaysShow: true,
-      redirect: '/exam/index',
       children: [{
         path: '/exam/index',
         name: '考试',
-        meta: {
-          title: '考试',
-          roles: ['admin', 'common'],
-          icon: 'el-icon-s-tools'
-        },
+        hidden: false,
+        meta: { title: '考试', roles: ['admin', 'common'], icon: 'el-icon-s-tools', },
         component: () => import(/* webpackChunkName: "Login" */ '@/views/Tool/Exam/index.vue'),
-        hidden: false
       }]
+    },
+    {
+      path: '/clazz',
+      component: Layout,
+      name: '班级管理',
+      hidden: false,
+      meta: { title: '班级管理', role: ['admin', 'common'], icon: 'el-icon-user-solid', },
+      children:[
+        {
+          path: '/clazz/underline',
+          name: '线下课程库',
+          hidden: false,
+          meta: { title: '线下课程库', roles: ['admin', 'common'], icon: 'el-icon-menu', },
+          children: [
+            {
+              path: '/clazz/underline/underlineclass',
+              name: '线下课程分类',
+              hidden: false,
+              meta: { title: '线下课程分类', roles: ['admin', 'common'], icon: 'el-icon-s-tools', },
+              component: () => import(/* webpackChunkName: "Clazz" */ '@/views/Clazz/UnderLine/UnderLineClass.vue'),
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: '*',
+      name: 'Page404',
+      hidden: true,
+      component: () => import(/* webpackChunkName: "404" */ '@/views/404'),
+      meta: { role: ['admin', 'common'] }
     }
 ]
 

@@ -6,6 +6,7 @@ import store from "./store";
 import "@/icons";
 import '@/mock/test';
 import './permission'
+import '@/assets/css/style.less'
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 Vue.use(ElementUI);

@@ -2,6 +2,7 @@
 <template>
   <el-header>
     <div>header</div>
+    <div>breadcrumb</div>
   </el-header>
 </template>
 
@@ -17,6 +18,5 @@ export default {
 
 <style lang="less" scpoed>
 .el-header {
-  background: #ccc;
 }
 </style>
