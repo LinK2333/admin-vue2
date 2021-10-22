@@ -11,16 +11,16 @@
 </template>
 
 <script>
-import topBar from "@/components/Bar/topBar";
-import sideBar from "@/components/Bar/sideBar";
+import TopBar from "@/components/Bar/TopBar";
+import SideBar from "@/components/Bar/SideBar";
 export default {
   name: "layOut",
   data() {
     return {};
   },
   components: {
-    "top-bar": topBar,
-    "side-bar": sideBar,
+    TopBar,
+    SideBar,
   },
 };
 </script>

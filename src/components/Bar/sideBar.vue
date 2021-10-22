@@ -3,20 +3,19 @@
     <el-menu
       :default-active="$route.path"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
       :unique-opened="uniqueopened"
       :router="true"
       :collapse="isCollapse"
     >
-      <div v-for="route in menusList" :key="route.name" v-if="!route.hidden">
+      <div v-for="route in renderList" :key="route.name">
         <!-- 单路由   -->
-        <el-menu-item v-if="route.alwaysShow" :index="route.children[0].path">
+        <menu-item :route="route"></menu-item>
+        <!-- <el-menu-item v-if="route.alwaysShow" :index="route.children[0].path">
           <i :class="route.children[0].meta.icon"></i>
           <span slot="title">{{ route.children[0].name }}</span>
-        </el-menu-item>
+        </el-menu-item> -->
         <!-- 多路由 -->
-        <el-submenu v-else :index="route.path">
+        <!-- <el-submenu v-else :index="route.path">
           <template slot="title">
             <div class="link-style">
               <i :class="route.meta.icon"></i>
@@ -24,11 +23,9 @@
             </div>
           </template>
           <div v-for="child in route.children" :key="child.name">
-            <!-- 单路由 -->
             <el-menu-item-group v-if="route.alwaysShow">
               <el-menu-item :index="child.path">{{ child.name }}</el-menu-item>
             </el-menu-item-group>
-            <!-- 多路由 -->
             <el-submenu v-else :index="child.path">
               <template slot="title">
                 <div class="link-style">
@@ -37,7 +34,6 @@
                 </div>
               </template>
               <div v-for="child2 in child.children" :key="child2.name">
-                <!-- 单路由 -->
                 <el-menu-item-group>
                   <el-menu-item :index="child2.path">{{
                     child2.name
@@ -46,15 +42,18 @@
               </div>
             </el-submenu>
           </div>
-        </el-submenu>
+        </el-submenu> -->
       </div>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
-import menu from "./menu.vue";
+import MenuItem from "./MenuItem.vue";
 export default {
+  components: {
+    MenuItem,
+  },
   data() {
     return {
       uniqueopened: true,
@@ -62,10 +61,12 @@ export default {
       isCollapse: false,
     };
   },
-  methods: {
-    handleOpen() {},
-    handleClose() {},
+  computed: {
+    renderList() {
+      return this.menusList.filter(item => !item.hidden);
+    },
   },
+  methods: {},
   created() {
     this.menusList = JSON.parse(JSON.stringify(this.$store.getters.routes));
   },

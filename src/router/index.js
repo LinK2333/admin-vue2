@@ -68,13 +68,14 @@ Vue.use(VueRouter);
           hidden: false,
           alwaysShow: true,
           meta: { title: '线下课程库', roles: ['admin', 'common'], icon: 'el-icon-menu', },
+          component: () => import(/* webpackChunkName: "UnderLine" */ '@/views/Clazz/UnderLine/index.vue'),
           children: [
             {
               path: '/clazz/underline/underlineclass',
               name: '线下课程分类',
               hidden: false,
               meta: { title: '线下课程分类', roles: ['admin', 'common'], icon: 'el-icon-s-tools', },
-              component: () => import(/* webpackChunkName: "Clazz" */ '@/views/Clazz/UnderLine/UnderLineClass.vue'),
+              component: () => import(/* webpackChunkName: "UnderLineClass" */ '@/views/Clazz/UnderLine/UnderLineClass.vue'),
             }
           ]
         }
