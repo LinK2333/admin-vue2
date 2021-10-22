@@ -50,9 +50,11 @@
 
 <script>
 import MenuItem from "./MenuItem.vue";
+import MoreMenuItem from "./MoreMenuItem.vue";
 export default {
   components: {
     MenuItem,
+    MoreMenuItem,
   },
   data() {
     return {
