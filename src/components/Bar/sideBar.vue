@@ -10,13 +10,12 @@
       :collapse="isCollapse"
     >
       <div v-for="route in menusList" :key="route.name" v-if="!route.hidden">
-        <el-menu-item
-          v-if="route.children && route.children.length > 0"
-          :index="route.children[0].path"
-        >
+        <!-- 单路由   -->
+        <el-menu-item v-if="route.alwaysShow" :index="route.children[0].path">
           <i :class="route.children[0].meta.icon"></i>
           <span slot="title">{{ route.children[0].name }}</span>
         </el-menu-item>
+        <!-- 多路由 -->
         <el-submenu v-else :index="route.path">
           <template slot="title">
             <div class="link-style">
@@ -24,9 +23,29 @@
               <span slot="title">{{ route.name }}</span>
             </div>
           </template>
-          <el-menu-item-group v-for="child in route.children" :key="child.name">
-            <el-menu-item :index="child.path">{{ child.name }}</el-menu-item>
-          </el-menu-item-group>
+          <div v-for="child in route.children" :key="child.name">
+            <!-- 单路由 -->
+            <el-menu-item-group v-if="route.alwaysShow">
+              <el-menu-item :index="child.path">{{ child.name }}</el-menu-item>
+            </el-menu-item-group>
+            <!-- 多路由 -->
+            <el-submenu v-else :index="child.path">
+              <template slot="title">
+                <div class="link-style">
+                  <i :class="child.meta.icon"></i>
+                  <span slot="title">{{ child.name }}</span>
+                </div>
+              </template>
+              <div v-for="child2 in child.children" :key="child2.name">
+                <!-- 单路由 -->
+                <el-menu-item-group>
+                  <el-menu-item :index="child2.path">{{
+                    child2.name
+                  }}</el-menu-item>
+                </el-menu-item-group>
+              </div>
+            </el-submenu>
+          </div>
         </el-submenu>
       </div>
     </el-menu>
@@ -36,9 +55,6 @@
 <script>
 import menu from "./menu.vue";
 export default {
-  component: {
-    menu,
-  },
   data() {
     return {
       uniqueopened: true,
@@ -56,4 +72,8 @@ export default {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.el-menu-vertical-demo {
+  height: 100%;
+}
+</style>

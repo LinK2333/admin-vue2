@@ -46,6 +46,7 @@ Vue.use(VueRouter);
       path: '/exam',
       component: Layout,
       hidden: false,
+      alwaysShow: true,
       children: [{
         path: '/exam/index',
         name: '考试',
@@ -65,6 +66,7 @@ Vue.use(VueRouter);
           path: '/clazz/underline',
           name: '线下课程库',
           hidden: false,
+          alwaysShow: true,
           meta: { title: '线下课程库', roles: ['admin', 'common'], icon: 'el-icon-menu', },
           children: [
             {
