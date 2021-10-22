@@ -1,5 +1,5 @@
 <template>
-  <el-menu-item v-if="route.alwaysShow" :index="route.children[0].path">
+  <el-menu-item :index="route.children[0].path">
     <i :class="route.children[0].meta.icon"></i>
     <span slot="title">{{ route.children[0].name }}</span>
   </el-menu-item>
@@ -10,8 +10,8 @@ export default {
   name: "MenuItem",
   props: {
     route: {
-      type: Array,
-      default: [],
+      type: Object,
+      default: {},
     },
   },
   data() {
